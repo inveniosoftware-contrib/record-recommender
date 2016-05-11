@@ -1,0 +1,30 @@
+
+
+notifications:
+  email: false
+
+language: python
+
+cache:
+  directories:
+    - $HOME/.cache/pip
+
+python:
+  - "2.7"
+  - "3.3"
+  - "3.4"
+  - "3.5"
+
+before_install:
+  - "travis_retry pip install --upgrade pip 'setuptools<20.5' py"
+  - "travis_retry pip install twine wheel coveralls requirements-builder"
+
+
+install:
+  - "travis_retry pip install -e .[all]"
+
+script:
+  - "./run-tests.sh"
+
+after_success:
+  - coveralls

@@ -1,0 +1,7 @@
+include *.md
+include *.rst
+include *.sh
+include *.yml
+include LICENSE
+include pytest.ini
+recursive-include tests *.py

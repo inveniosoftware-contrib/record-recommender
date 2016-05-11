@@ -1,0 +1,58 @@
+# Record-Recommender configuration.
+
+elasticsearch:
+  es_index: ['index-2014', 'index-2015', 'index-2016']
+  es_user: user
+  es_password:
+  es_host: localhost
+  es_port: 443
+
+recommendation_version: 2
+
+# Sentry connection string
+sentry:
+
+redis:
+  host: localhost
+  port: 6379
+  db: 0
+  prefix: 'Reco_1::'
+
+cache:
+  base_path: /var/cache/record_recommender/
+  cache_file_prefix: ''
+
+
+logging:
+  version: 1
+  disable_existing_loggers: False
+  formatters:
+    simple:
+      format: '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+  handlers:
+    console:
+      class: logging.StreamHandler
+      level: INFO
+      formatter: simple
+      stream: ext://sys.stdout
+    sentry:
+      class: raven.handlers.logging.SentryHandler
+      level: WARN
+      dsn:
+    file:
+      class : logging.FileHandler
+      formatter: simple
+      level: DEBUG
+      filename: log_recommender.log
+  loggers:
+    record_recommender:
+      level: DEBUG
+      handlers: [console, file, sentry]
+      propagate: no
+    # elasticsearch:
+    #   level: WARN
+    #   handlers: [console]
+    #   propagate: no
+  root:
+    level: ERROR
+    handlers: [console, file, sentry]
