@@ -1,30 +1,30 @@
-
-
 notifications:
   email: false
-
 language: python
-
 cache:
   directories:
-    - $HOME/.cache/pip
-
+  - "$HOME/.cache/pip"
 python:
-  - "2.7"
-  - "3.3"
-  - "3.4"
-  - "3.5"
-
+- '2.7'
+- '3.3'
+- '3.4'
+- '3.5'
 before_install:
-  - "travis_retry pip install --upgrade pip 'setuptools<20.5' py"
-  - "travis_retry pip install twine wheel coveralls requirements-builder"
-
-
+- travis_retry pip install --upgrade pip 'setuptools<20.5' py
+- travis_retry pip install twine wheel coveralls requirements-builder
 install:
   - "travis_retry pip install -e .[all]"
-
 script:
-  - "./run-tests.sh"
-
+- "./run-tests.sh"
 after_success:
-  - coveralls
+- coveralls
+deploy:
+  provider: pypi
+  user: egabancho
+  password:
+    secure: VjD7Ib4FhXVGiaaqFvvB7qpu1anPIu6lnSZpiiHF/y9qy/miAOamgCTpeDoDfWoXQKKFdOZQ9b18k7XzpuTVBhPWQyNLeFuXXiBc84TU9aU9lYuD3BMWsP/Ry6k9TeeMDphb9HFONF3kPPCqzXt71sRUpnoRASVTtKJreEv+NbD896q+vxVcmOhcwKUQ/J3IW6VoPQ5jUk6LVJQonHC349/lWvNPZrHHf1pTK9+CBvMt7M2o3p0OvJidYBC2ldTChR43yD5oIEH5YgnaFzFcva/6ZGOL5fSrWjpTaph6K5jKfYCsioxKmiq7hHOw8g7vzbOG6SQuhHq/MlPQFuHrRU/kNUPQM4pYxg8uk2oIrYEXYD+hrqaCLnrkpVPWC0HrT5RCGzJOwRhYlWBveTpObOXgYB2vjqQp41doGKS4OU6hc5Q5bIoOSLZ+pJx5YDsl00bcuspomiaBbhMFqszbaK0vl71NXcG34WICN0xtDyzF1utYDB4s8GWWbbaGluknBrdFqzz5yLbWC1PQpx42icJgpKUe0XLoSuupw1HlufHjq9VxX1XwA/gycrrg8ZoN2pppQv5MuqGQxZ6u18m/nRThBDTEfj3p6TLl4yOFXR3iRxZLrSYfSLDwCuweHAVDRHNpUIO5WjOY9F5kGn5isGM1PQGmeOxrHVCCdL2CjIA=
+  on:
+    tags: true
+    python: "2.7"
+    distributions: sdist bdist_wheel
+    repo: CERNDocumentServer/record-recommender
