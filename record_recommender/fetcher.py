@@ -72,19 +72,20 @@ class ElasticsearchFetcher(object):
                        # 'query_size': 2000,
                        # 'query_scroll_size': '10m',
                        'overwrite_files': False,
-                       'es_user': '',
-                       'es_password': '',
-                       'es_host': '',
+                       'es_host': '127.0.0.1',
                        'es_port': '443'
                        }
         if config:
             self.config.update(config.get('elasticsearch'))
-        es_string = "https://{}:{}@{}:{}".format(self.config['es_user'],
-                                                 self.config['es_password'],
-                                                 self.config['es_host'],
-                                                 self.config['es_port'],
-                                                 )
-        self._esd = Elasticsearch(hosts=[es_string], timeout=900)
+        self._esd = Elasticsearch(
+            hosts=[
+                {
+                    'host': self.config['es_host'],
+                    'port': self.config['es_port']
+                },
+                ],
+            timeout=900
+        )
         # Check connection to Elasticsearch.
         self._esd.ping()
         self._download_filter = []

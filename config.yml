@@ -2,9 +2,7 @@
 
 elasticsearch:
   es_index: ['index-2014', 'index-2015', 'index-2016']
-  es_user: user
-  es_password:
-  es_host: localhost
+  es_host: 127.0.0.1
   es_port: 443
 
 recommendation_version: 2

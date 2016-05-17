@@ -82,10 +82,9 @@ def fetch(weeks, force):
 
 @cli.command()
 @click.argument('weeks', type=int)
-@click.argument('cores', type=int)
-@click.option('--ip-views', '-ip', is_flag=True,
-              help='Also uses IP based user profiles.')
-def update_recommender(weeks, cores, ip_views):
+@click.argument('processes', type=int)
+@click.pass_context
+def update_recommender(ctx, weeks, processes):
     """
     Download and build the recommendations.
 
@@ -102,10 +101,10 @@ def update_recommender(weeks, cores, ip_views):
     recommender.fetch_weeks(weeks, overwrite=False)
 
     print("Build Profiles")
-    profiles(weeks)
+    ctx.invoke(profiles, weeks=weeks)
 
     print("Generate Recommendations")
-    build(cores, ip_views)
+    ctx.invoke(build, processes=processes)
 
 
 @cli.command()
@@ -117,15 +116,13 @@ def profiles(weeks):
     Starting with the current week.
     """
     profiles = Profiles(store)
-    weeks = get_last_weeks(weeks)
+    weeks = get_last_weeks(weeks) if isinstance(weeks, int) else weeks
     print(weeks)
     profiles.create(weeks)
 
 
 @cli.command()
 @click.argument('processes', type=int)
-# @click.option('--no-ip-views', '-ip', is_flag=False,
-#               help='Also uses IP based user profiles.')
 def build(processes):
     """
     Calculate all recommendations using the number of specified processes.
